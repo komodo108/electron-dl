@@ -2,6 +2,12 @@
 
 > Simplified file downloads for your [Electron](https://electronjs.org) app
 
+## Fork
+This is a fork of [Electron-dl](https://github.com/sindresorhus/electron-dl) with the following:
+* Support for `onInterrupt()` that overrides existing functionality
+* Support for `onDone()`
+* More to come if needed
+
 ## Why?
 
 - One function call instead of having to manually implement a lot of [boilerplate](index.js).
@@ -136,6 +142,18 @@ Optional callback that receives an object containing information about the progr
 	totalBytes: 1000
 }
 ```
+
+#### onInterrupt
+
+Type: `Function`
+
+Optional callback for when an interruption has occured.
+
+#### onDone
+
+Type: `Function`
+
+Optional callback for when a download has completed.
 
 #### onCancel
 

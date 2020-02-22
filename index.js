@@ -110,9 +110,13 @@ function registerListener(session, options, callback = () => {}) {
 					options.onCancel(item);
 				}
 			} else if (state === 'interrupted') {
-				const message = pupa(errorMessage, {filename: item.getFilename()});
-				dialog.showErrorBox(errorTitle, message);
-				callback(new Error(message));
+				if (typeof options.onInterrupt === 'function') {
+					options.onInterrupt(item);
+				} else {
+					const message = pupa(errorMessage, {filename: item.getFilename()});
+					dialog.showErrorBox(errorTitle, message);
+					callback(new Error(message));
+				}
 			} else if (state === 'completed') {
 				if (process.platform === 'darwin') {
 					app.dock.downloadFinished(filePath);
@@ -121,8 +125,10 @@ function registerListener(session, options, callback = () => {}) {
 				if (options.openFolderWhenDone) {
 					shell.showItemInFolder(path.join(directory, item.getFilename()));
 				}
-
-				callback(null, item);
+				
+				if (typeof options.onDone === 'function') {
+					options.onDone(item);
+				} callback(null, item);
 			}
 		});
 	};
